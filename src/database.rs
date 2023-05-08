@@ -134,7 +134,6 @@ use std::sync::Arc;
 use std::sync::Condvar;
 use std::sync::Mutex;
 use std::thread;
-use std::time::Instant;
 
 /// Structure for options that affect database processing, and must be constant
 /// for the lifetime of the database container.
@@ -411,12 +410,7 @@ impl Default for Database {
 }
 
 pub(crate) fn time<R, F: FnOnce() -> R>(opts: &DbOptions, name: &str, f: F) -> R {
-    let now = Instant::now();
     let ret = f();
-    if opts.timing {
-        // no as_msecs :(
-        println!("{} {}ms", name, (now.elapsed() * 1000).as_secs());
-    }
     ret
 }
 
